@@ -39,7 +39,9 @@ target "user" {
     BIN_PATH = "./services/user/cmd/user"
     BIN_NAME = "user"
   }
-  tags = ["${REGISTRY}/svc/user:${TAG}"]
+  tags       = ["${REGISTRY}/svc/user:${TAG}"]
+  cache-from = ["type=gha,scope=user"]
+  cache-to   = ["type=gha,scope=user,mode=max"]
 }
 
 target "webapp-bff" {
@@ -48,7 +50,9 @@ target "webapp-bff" {
     BIN_PATH = "./apps/webapp/cmd/webapp"
     BIN_NAME = "webapp"
   }
-  tags = ["${REGISTRY}/apps/webapp/api:${TAG}"]
+  tags       = ["${REGISTRY}/apps/webapp/api:${TAG}"]
+  cache-from = ["type=gha,scope=webapp-bff"]
+  cache-to   = ["type=gha,scope=webapp-bff,mode=max"]
 }
 
 target "webapp-web" {
@@ -56,5 +60,7 @@ target "webapp-web" {
   args = {
     WEB_PKG = "@base/webapp"
   }
-  tags = ["${REGISTRY}/apps/webapp/web:${TAG}"]
+  tags       = ["${REGISTRY}/apps/webapp/web:${TAG}"]
+  cache-from = ["type=gha,scope=webapp-web"]
+  cache-to   = ["type=gha,scope=webapp-web,mode=max"]
 }

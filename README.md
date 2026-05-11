@@ -166,10 +166,102 @@ loses atomicity with the DB write.
 
 ## Deploy
 
+Two paths are supported locally:
+
+- **Path A — k3d + kustomize:** build images locally, load into k3d, apply
+  the dev overlay directly. Fastest iteration loop.
+- **Path B — k3d + Argo CD (GitOps):** pull images from GHCR (built by CI),
+  sync from `deploy/k8s/overlays/dev` on `main`. Mirrors production.
+
+### A. Local k3d (no Argo CD)
+
 ```bash
-make images TAG=v0.1.0          # builds all images
-make k8s-dev                    # apply dev overlay
-make k8s-prod                   # apply prod overlay (after editing image registry)
+# 1. Spin up the cluster (1 server + 2 agents, ingress-nginx on :80/:443)
+make k3d-up
+
+# 2. Resolve the webapp ingress locally
+echo '127.0.0.1  app.example.com' | sudo tee -a /etc/hosts
+
+# 3. Build images with the names the dev overlay references
+make images TAG=dev                         # REGISTRY=base by default
+
+# 4. Load them into the k3d node-local registry
+k3d image import \
+  base/svc/user:dev \
+  base/apps/webapp/api:dev \
+  base/apps/webapp/web:dev \
+  -c base
+
+# 5. Apply the dev overlay
+make k8s-dev
+
+# 6. Watch rollout
+kubectl -n base-dev get pods -w
+```
+
+Open <http://app.example.com>. To iterate on one service: rebuild + reimport
+that image, then `kubectl -n base-dev rollout restart deploy/<name>`.
+
+### B. Local k3d + Argo CD (GitOps)
+
+Requires images already pushed to GHCR (CI does this on push to `main`).
+
+```bash
+# 1. Cluster
+make k3d-up
+
+# 2. Install Argo CD + register the repo + create the dev Application
+export GITHUB_USERNAME=daominhhiep
+export GITHUB_TOKEN=ghp_xxx       # scopes: repo, read:packages
+make argocd-install
+
+# 3. Open the UI (admin / password from argocd-pass)
+make argocd-ui                    # → https://localhost:8080
+make argocd-pass
+
+# 4. Argo CD auto-syncs `deploy/k8s/overlays/dev` to namespace `base-dev`
+kubectl -n base-dev get pods
+```
+
+CI's `bump-dev-tag` job updates the image tags in
+`deploy/k8s/overlays/dev/kustomization.yaml` after each push to `main`,
+which Argo CD picks up and rolls out.
+
+### Useful kubectl commands
+
+```bash
+# Tail logs
+kubectl -n base-dev logs -f deploy/user
+kubectl -n base-dev logs -f deploy/webapp-bff
+kubectl -n base-dev logs -f deploy/webapp-web
+
+# Shell into a pod
+kubectl -n base-dev exec -it deploy/user -- /bin/sh   # distroless: no shell; use ephemeral debug:
+kubectl -n base-dev debug -it deploy/user --image=busybox --target=user
+
+# Port-forward bypassing ingress
+kubectl -n base-dev port-forward svc/webapp-bff 8080:80
+
+# Postgres / NATS inside the cluster
+kubectl -n base-dev exec -it statefulset/postgres -- psql -U base
+kubectl -n base-dev port-forward svc/nats 4222:4222
+
+# Re-render overlay without applying (sanity check)
+kubectl kustomize deploy/k8s/overlays/dev | less
+
+# Force a rollout (e.g. after secret/config change)
+kubectl -n base-dev rollout restart deploy/webapp-bff
+
+# Tear down
+make k3d-down
+```
+
+### Prod overlay
+
+```bash
+# Edit deploy/k8s/overlays/prod/kustomization.yaml to point at the real
+# REGISTRY + image tags, then:
+make k8s-prod
 ```
 
 Replace the placeholder `replace-me-with-32-plus-char-random-string`

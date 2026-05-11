@@ -46,13 +46,15 @@ jobs:
       - id: meta
         run: echo "tag=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
       - name: Build & push multi-arch images
+        uses: docker/bake-action@v5
         env:
           TAG: ${{ steps.meta.outputs.tag }}
           VERSION: ${{ steps.meta.outputs.tag }}
           COMMIT: ${{ github.sha }}
-        run: |
-          docker buildx bake --push \
-            --set "*.platform=linux/amd64,linux/arm64"
+        with:
+          push: true
+          set: |
+            *.platform=linux/amd64,linux/arm64
 
   bump-dev-tag:
     needs: build-push
