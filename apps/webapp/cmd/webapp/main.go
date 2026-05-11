@@ -21,7 +21,7 @@ import (
 )
 
 type Config struct {
-	HTTPListen string              `kong:"name='http-listen',env='HTTP_LISTEN',default=':8082'"`
+	HTTPListen string                `kong:"name='http-listen',default=':8082'"`
 	Cookie     internal.CookieConfig `kong:"embed"`
 	Backends   internal.BackendURLs  `kong:"embed"`
 	JWT        pkgauth.Config        `kong:"embed,prefix='jwt-'"`

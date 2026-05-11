@@ -18,7 +18,7 @@ import (
 )
 
 type Config struct {
-	URL string `kong:"name='nats-url',env='NATS_URL',default='nats://localhost:4222'"`
+	URL string `kong:"name='url',default='nats://localhost:4222'"`
 }
 
 func Connect(cfg Config) (*nats.Conn, jetstream.JetStream, error) {

@@ -17,10 +17,10 @@ import (
 )
 
 type Config struct {
-	Secret     string        `kong:"name='jwt-secret',env='JWT_SECRET',required"`
-	Issuer     string        `kong:"name='jwt-issuer',env='JWT_ISSUER',default='base-microservice'"`
-	AccessTTL  time.Duration `kong:"name='jwt-access-ttl',env='JWT_ACCESS_TTL',default='15m'"`
-	RefreshTTL time.Duration `kong:"name='jwt-refresh-ttl',env='JWT_REFRESH_TTL',default='720h'"`
+	Secret     string        `kong:"name='secret',required"`
+	Issuer     string        `kong:"name='issuer',default='base-microservice'"`
+	AccessTTL  time.Duration `kong:"name='access-ttl',default='15m'"`
+	RefreshTTL time.Duration `kong:"name='refresh-ttl',default='720h'"`
 }
 
 // Claims are the JWT body. Audience differentiates access vs refresh tokens.

@@ -13,11 +13,11 @@ import (
 )
 
 type Config struct {
-	URL             string        `kong:"name='postgres-url',env='POSTGRES_URL',required"`
-	MaxOpenConns    int           `kong:"name='postgres-max-open',env='POSTGRES_MAX_OPEN',default='25'"`
-	MaxIdleConns    int           `kong:"name='postgres-max-idle',env='POSTGRES_MAX_IDLE',default='5'"`
-	ConnMaxLifetime time.Duration `kong:"name='postgres-conn-lifetime',env='POSTGRES_CONN_LIFETIME',default='30m'"`
-	AutoMigrate     bool          `kong:"name='auto-migrate',env='AUTO_MIGRATE',help='Run GORM AutoMigrate on boot (dev only)'"`
+	URL             string        `kong:"name='postgres-url',required"`
+	MaxOpenConns    int           `kong:"name='postgres-max-open',default='25'"`
+	MaxIdleConns    int           `kong:"name='postgres-max-idle',default='5'"`
+	ConnMaxLifetime time.Duration `kong:"name='postgres-conn-lifetime',default='30m'"`
+	AutoMigrate     bool          `kong:"name='auto-migrate',help='Run GORM AutoMigrate on boot (dev only)'"`
 }
 
 func Open(cfg Config) (*gorm.DB, error) {

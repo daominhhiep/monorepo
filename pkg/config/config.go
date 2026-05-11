@@ -15,7 +15,7 @@ func Parse(serviceName string, cfg any, args ...string) {
 	if args == nil {
 		args = os.Args[1:]
 	}
-	prefix := "BASE_" + strings.ToUpper(strings.ReplaceAll(serviceName, "-", "_")) + "_"
+	prefix := "BASE_" + strings.ToUpper(strings.ReplaceAll(serviceName, "-", "_"))
 	parser, err := kong.New(cfg,
 		kong.Name(serviceName),
 		kong.Description("base-microservice "+serviceName+" binary"),

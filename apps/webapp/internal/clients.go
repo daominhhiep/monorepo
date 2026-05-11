@@ -10,7 +10,7 @@ import (
 )
 
 type BackendURLs struct {
-	UserURL string `kong:"name='backend-user-url',env='BACKEND_USER_URL',default='http://localhost:8001'"`
+	UserURL string `kong:"name='backend-user-url',default='http://localhost:8001'"`
 }
 
 type Backends struct {

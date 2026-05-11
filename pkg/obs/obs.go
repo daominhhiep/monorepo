@@ -18,8 +18,8 @@ import (
 
 type Config struct {
 	ServiceName string `kong:"-"`
-	Level       string `kong:"name='log-level',env='LOG_LEVEL',default='info'"`
-	JSON        bool   `kong:"name='log-json',env='LOG_JSON',default='true'"`
+	Level       string `kong:"name='log-level',default='info'"`
+	JSON        bool   `kong:"name='log-json',default='true'"`
 }
 
 // Init configures the global zerolog logger. Returns a shutdown func that

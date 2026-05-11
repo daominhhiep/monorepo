@@ -17,9 +17,9 @@ const (
 )
 
 type CookieConfig struct {
-	Domain   string `kong:"name='cookie-domain',env='COOKIE_DOMAIN',default='localhost'"`
-	Secure   bool   `kong:"name='cookie-secure',env='COOKIE_SECURE',default='false'"`
-	SameSite string `kong:"name='cookie-samesite',env='COOKIE_SAMESITE',default='lax'"`
+	Domain   string `kong:"name='cookie-domain',default='localhost'"`
+	Secure   bool   `kong:"name='cookie-secure',default='false'"`
+	SameSite string `kong:"name='cookie-samesite',default='lax'"`
 }
 
 type Authenticator struct {

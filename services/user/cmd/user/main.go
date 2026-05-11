@@ -28,7 +28,7 @@ import (
 )
 
 type Config struct {
-	HTTPListen string `kong:"name='http-listen',env='HTTP_LISTEN',default=':8001'"`
+	HTTPListen string `kong:"name='http-listen',default=':8001'"`
 	DB         db.Config       `kong:"embed,prefix='db-'"`
 	NATS       bnats.Config    `kong:"embed,prefix='nats-'"`
 	Obs        obs.Config      `kong:"embed,prefix='obs-'"`
