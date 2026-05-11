@@ -14,3 +14,4 @@ inputs:
   - directory: ../../../proto
     paths:
       - ../../../proto/apps/webapp/v1/api.proto
+  - module: buf.build/bufbuild/protovalidate
