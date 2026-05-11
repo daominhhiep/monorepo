@@ -5,13 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port 3000",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "buf:generate": "buf generate --template buf.gen.yaml"
   },
   "dependencies": {
+    "@bufbuild/protobuf": "^2.2.0",
     "@connectrpc/connect": "^2.0.0",
     "@connectrpc/connect-web": "^2.0.0",
     "@base/ui": "workspace:*",
@@ -24,6 +25,7 @@
     "@base/eslint-config": "workspace:*",
     "@bufbuild/buf": "^1.69.0",
     "@bufbuild/protoc-gen-es": "^2.2.0",
+    "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",

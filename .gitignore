@@ -18,6 +18,7 @@ node_modules/
 # FE build
 apps/*/web/dist/
 apps/*/web/.vite/
+*.tsbuildinfo
 
 # Env
 .env
