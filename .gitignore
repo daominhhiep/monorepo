@@ -1,0 +1,40 @@
+# Go
+*.exe
+*.test
+*.out
+bin/
+dist/
+coverage.out
+coverage.html
+
+# Node
+node_modules/
+.pnpm-store/
+*.log
+.npm/
+.yarn/
+.parcel-cache/
+
+# FE build
+apps/*/web/dist/
+apps/*/web/.vite/
+
+# Env
+.env
+.env.local
+.env.*.local
+!.env.example
+!.env.db.example
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Dev tools
+.overmind.sock
+.pids/
+
+# Misc
+tmp/

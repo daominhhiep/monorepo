@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: webapp
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: app.example.com
+      http:
+        paths:
+          # Connect-RPC traffic → BFF.
+          - path: /apps.webapp.v1.APIService
+            pathType: Prefix
+            backend:
+              service:
+                name: webapp-bff
+                port:
+                  number: 80
+          # Everything else → static SPA.
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: webapp-web
+                port:
+                  number: 80

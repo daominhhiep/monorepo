@@ -1,0 +1,14 @@
+go 1.25.0
+
+use (
+	./apps/webapp
+	./gen
+	./pkg/actor
+	./pkg/auth
+	./pkg/config
+	./pkg/db
+	./pkg/nats
+	./pkg/obs
+	./pkg/outbox
+	./services/user
+)

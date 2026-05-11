@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-config
+data:
+  BASE_USER_HTTP_LISTEN: ":8001"
+  BASE_USER_DB_POSTGRES_URL: "postgres://base:base@postgres:5432/base_user?sslmode=disable"
+  BASE_USER_NATS_NATS_URL: "nats://nats:4222"
+  BASE_USER_JWT_ISSUER: "base-microservice"
+  BASE_USER_JWT_ACCESS_TTL: "15m"
+  BASE_USER_JWT_REFRESH_TTL: "720h"
+  BASE_USER_OBS_LOG_LEVEL: "info"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: user-secret
+type: Opaque
+stringData:
+  BASE_USER_JWT_SECRET: "replace-me-with-32-plus-char-random-string"

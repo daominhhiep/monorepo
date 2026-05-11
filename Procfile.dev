@@ -1,0 +1,3 @@
+user: cd services/user && BASE_USER_DB_AUTO_MIGRATE=true go run ./cmd/user
+webapp-bff: cd apps/webapp && go run ./cmd/webapp
+webapp-web: pnpm --filter @base/webapp dev

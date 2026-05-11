@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webapp-bff-config
+data:
+  BASE_WEBAPP_HTTP_LISTEN: ":8082"
+  BASE_WEBAPP_BACKEND_USER_URL: "http://user.svc.cluster.local"
+  BASE_WEBAPP_COOKIE_DOMAIN: "example.com"
+  BASE_WEBAPP_COOKIE_SECURE: "true"
+  BASE_WEBAPP_COOKIE_SAMESITE: "lax"
+  BASE_WEBAPP_JWT_ISSUER: "base-microservice"
+  BASE_WEBAPP_JWT_ACCESS_TTL: "15m"
+  BASE_WEBAPP_JWT_REFRESH_TTL: "720h"
+  BASE_WEBAPP_OBS_LOG_LEVEL: "info"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: webapp-bff-secret
+type: Opaque
+stringData:
+  # MUST match the user service's secret so issued tokens verify.
+  BASE_WEBAPP_JWT_SECRET: "replace-me-with-32-plus-char-random-string"

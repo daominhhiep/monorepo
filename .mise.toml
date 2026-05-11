@@ -1,0 +1,14 @@
+[tools]
+go = "1.25.10"
+node = "22.11.0"
+pnpm = "10.4.1"
+buf = "1.69.0"
+"go:google.golang.org/protobuf/cmd/protoc-gen-go" = "1.36.11"
+"go:google.golang.org/grpc/cmd/protoc-gen-go-grpc" = "1.6.1"
+"go:connectrpc.com/connect/cmd/protoc-gen-connect-go" = "1.18.1"
+golangci-lint = "2.12.2"
+lefthook = "2.1.6"
+overmind = "2.5.1"
+
+[env]
+_.file = ".env"

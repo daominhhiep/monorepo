@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package user;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/base/base-microservice/gen/user;user";
+
+// Subjects published on JetStream stream `base`:
+//   base.user.v1.UserRegistered
+//   base.user.v1.UserUpdated
+//   base.user.v1.UserDeleted
+// Nats-Msg-Id header convention: "<event_type>:<aggregate_id>:<version>"
+
+message UserRegisteredEvent {
+  string user_id = 1;
+  string email = 2;
+  string name = 3;
+  google.protobuf.Timestamp registered_at = 4;
+}
+
+message UserUpdatedEvent {
+  string user_id = 1;
+  string name = 2;
+  repeated string roles = 3;
+  google.protobuf.Timestamp updated_at = 4;
+}
+
+message UserDeletedEvent {
+  string user_id = 1;
+  google.protobuf.Timestamp deleted_at = 2;
+}

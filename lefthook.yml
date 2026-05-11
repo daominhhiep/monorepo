@@ -1,0 +1,22 @@
+pre-commit:
+  parallel: true
+  commands:
+    go-fmt:
+      glob: "*.go"
+      run: gofmt -l {staged_files}
+    go-mod-tidy:
+      glob: "**/go.mod"
+      run: |
+        for f in {staged_files}; do
+          (cd "$(dirname $f)" && go mod tidy)
+        done
+    fe-typecheck:
+      glob: "*.{ts,tsx}"
+      run: pnpm -r typecheck
+
+commit-msg:
+  commands:
+    conventional-commits:
+      run: |
+        head -n1 "$1" | grep -qE '^(feat|fix|chore|docs|refactor|test|build|ci|perf)(\(.+\))?:' \
+          || { echo 'commit must start with feat|fix|chore|docs|refactor|test|build|ci|perf:'; exit 1; }

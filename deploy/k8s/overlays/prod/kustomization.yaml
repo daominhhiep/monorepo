@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: base-prod
+
+resources:
+  - namespace.yaml
+  - ../../base
+
+# Prod: scale up, point to real image registry tags.
+images:
+  - name: base/svc/user
+    newName: registry.example.com/base/svc/user
+    newTag: v0.1.0
+  - name: base/apps/webapp/api
+    newName: registry.example.com/base/apps/webapp/api
+    newTag: v0.1.0
+  - name: base/apps/webapp/web
+    newName: registry.example.com/base/apps/webapp/web
+    newTag: v0.1.0
+
+replicas:
+  - name: user
+    count: 2
+  - name: webapp-bff
+    count: 2
+  - name: webapp-web
+    count: 2

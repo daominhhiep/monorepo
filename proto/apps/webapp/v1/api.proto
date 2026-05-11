@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package apps.webapp.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/base/base-microservice/gen/apps/webapp/v1;webappv1";
+
+// APIService is the BFF surface for the example web app.
+// FE talks to this; BFF fans out to backend services with the
+// authenticated principal forwarded via X-Forwarded-User header.
+service APIService {
+  rpc Register(RegisterRequest) returns (RegisterResponse);
+  rpc Login(LoginRequest) returns (LoginResponse);
+  rpc Logout(LogoutRequest) returns (LogoutResponse);
+  rpc GetSession(GetSessionRequest) returns (GetSessionResponse);
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
+}
+
+message Principal {
+  string user_id = 1;
+  string email = 2;
+  string name = 3;
+  repeated string roles = 4;
+}
+
+message RegisterRequest {
+  string email = 1 [(buf.validate.field).string.email = true];
+  string name = 2 [(buf.validate.field).string.min_len = 1];
+  string password = 3 [(buf.validate.field).string.min_len = 8];
+}
+message RegisterResponse { Principal principal = 1; }
+
+message LoginRequest {
+  string email = 1 [(buf.validate.field).string.email = true];
+  string password = 2 [(buf.validate.field).string.min_len = 1];
+}
+message LoginResponse { Principal principal = 1; }
+
+message LogoutRequest {}
+message LogoutResponse {}
+
+message GetSessionRequest {}
+message GetSessionResponse {
+  // authenticated=false when no valid session cookie.
+  bool authenticated = 1;
+  Principal principal = 2;
+}
+
+message UserSummary {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  repeated string roles = 4;
+  google.protobuf.Timestamp created_at = 5;
+}
+
+message ListUsersRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+}
+message ListUsersResponse {
+  repeated UserSummary users = 1;
+  string next_page_token = 2;
+}
