@@ -4,26 +4,29 @@ kind: Kustomization
 namespace: base-dev
 
 resources:
-  - namespace.yaml
-  - ../../base
+- namespace.yaml
+- ../../base
 
 images:
-  - name: base/svc/user
-    newTag: dev
-  - name: base/apps/webapp/api
-    newTag: dev
-  - name: base/apps/webapp/web
-    newTag: dev
+- name: base/apps/webapp/api
+  newName: ghcr.io/daominhhiep/monorepo/apps/webapp/api
+  newTag: 90b1593
+- name: base/apps/webapp/web
+  newName: ghcr.io/daominhhiep/monorepo/apps/webapp/web
+  newTag: 90b1593
+- name: base/svc/user
+  newName: ghcr.io/daominhhiep/monorepo/svc/user
+  newTag: 90b1593
 
 # Dev-only patches: relax cookie secure flag for HTTP ingress.
 patches:
-  - target:
-      kind: ConfigMap
-      name: webapp-bff-config
-    patch: |-
-      - op: replace
-        path: /data/BASE_WEBAPP_COOKIE_SECURE
-        value: "false"
-      - op: replace
-        path: /data/BASE_WEBAPP_COOKIE_DOMAIN
-        value: "localhost"
+- patch: |-
+    - op: replace
+      path: /data/BASE_WEBAPP_COOKIE_SECURE
+      value: "false"
+    - op: replace
+      path: /data/BASE_WEBAPP_COOKIE_DOMAIN
+      value: "localhost"
+  target:
+    kind: ConfigMap
+    name: webapp-bff-config
