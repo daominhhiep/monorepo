@@ -10,13 +10,13 @@ resources:
 images:
 - name: base/apps/webapp/api
   newName: ghcr.io/daominhhiep/monorepo/apps/webapp/api
-  newTag: 90b1593
+  newTag: 97be049
 - name: base/apps/webapp/web
   newName: ghcr.io/daominhhiep/monorepo/apps/webapp/web
-  newTag: 90b1593
+  newTag: 97be049
 - name: base/svc/user
   newName: ghcr.io/daominhhiep/monorepo/svc/user
-  newTag: 90b1593
+  newTag: 97be049
 
 # Dev-only patches: relax cookie secure flag for HTTP ingress.
 patches:
